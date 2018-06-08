@@ -25,3 +25,7 @@ body {
 .infowindow-text {
   max-width: 250px;
 }
+
+.logo {
+  padding: 5px 5px 0 0;
+}
