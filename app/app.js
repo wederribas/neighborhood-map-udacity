@@ -1,3 +1,11 @@
+const openedInfoWindow = [];
+
+function closeInfoWindows() {
+  openedInfoWindow.map(infoWindow => {
+    infoWindow.close();
+  });
+}
+
 function Marker(map, location) {
   const self = this;
 
@@ -12,6 +20,7 @@ function Marker(map, location) {
   });
 
   self.marker.addListener("click", function() {
+    closeInfoWindows();
     openInfoWindowWithAnimation(map, this);
   });
 
@@ -20,6 +29,8 @@ function Marker(map, location) {
 
 function openInfoWindowWithAnimation(map, marker) {
   const infoWindow = new google.maps.InfoWindow();
+
+  openedInfoWindow.push(infoWindow);
 
   const wikipediaAPI =
     "https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro=&explaintext=&titles=";
@@ -92,6 +103,7 @@ function MapViewModel(map) {
       const filter = self.locationFilter().toLowerCase();
 
       if (self.locationFilter() && locationName.indexOf(filter) == -1) {
+        closeInfoWindows();
         isVisible = false;
       }
 
