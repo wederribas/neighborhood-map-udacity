@@ -3,7 +3,7 @@ function Marker(map, location) {
 
   this.marker = new google.maps.Marker({
     id: location.id,
-    title: location.title,
+    title: location.name,
     position: {
       lat: location.lat,
       lng: location.lng
@@ -12,13 +12,46 @@ function Marker(map, location) {
   });
 
   self.marker.addListener("click", function() {
-    openInfoWindowWithAnimation(this);
+    openInfoWindowWithAnimation(map, this);
   });
 
   self.marker.setMap(map);
 }
 
-function openInfoWindowWithAnimation(marker) {
+function openInfoWindowWithAnimation(map, marker) {
+  const infoWindow = new google.maps.InfoWindow();
+
+  const wikipediaAPI =
+    "https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro=&explaintext=&titles=";
+
+  const articleUrl = "https://en.wikipedia.org/wiki/" + marker.title;
+
+  fetch(wikipediaAPI + marker.title, {
+    headers: {
+      "content-type": "application/json"
+    }
+  }).then(function(response) {
+    response.json().then(data => {
+      const pageId = Object.keys(data.query.pages)[0];
+
+      const locationSummary = data.query.pages[pageId].extract;
+
+      const content = `
+        <div>
+          <h3>${marker.title}</h3>
+          <article class="infowindow-text">
+            ${locationSummary.substring(0, 250)}...
+          </article>
+          <a href="${articleUrl}">View on Wikipedia</a>
+        </div>
+      `;
+
+      infoWindow.setContent(content);
+
+      infoWindow.open(map, marker);
+    });
+  });
+
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
   } else {
@@ -35,6 +68,7 @@ function MapViewModel(map) {
   const self = this;
 
   self.markers = ko.observableArray([]);
+  self.locationFilter = ko.observable("");
 
   self.locationsList = ko.computed(function() {
     const list = [];
@@ -47,8 +81,26 @@ function MapViewModel(map) {
   });
 
   self.selectLocation = function(clickedMarker) {
-    google.maps.event.trigger(self.markers()[clickedMarker.id].marker, "click");
+    selectedMarker = self.markers()[clickedMarker.id].marker;
+    google.maps.event.trigger(selectedMarker, "click");
   };
+
+  self.visibleLocations = ko.computed(function() {
+    return self.locationsList().filter(function(location) {
+      let isVisible = true;
+      const locationName = location.name.toLowerCase();
+      const filter = self.locationFilter().toLowerCase();
+
+      if (self.locationFilter() && locationName.indexOf(filter) == -1) {
+        isVisible = false;
+      }
+
+      marker = self.markers()[location.id].marker;
+      marker.setVisible(isVisible);
+
+      return isVisible;
+    });
+  });
 }
 
 function initMap() {

@@ -17,3 +17,11 @@ body {
   font-size: 25px;
   vertical-align: middle;
 }
+
+.w3-hover-teal {
+  cursor: pointer;
+}
+
+.infowindow-text {
+  max-width: 250px;
+}
