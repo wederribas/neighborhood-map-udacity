@@ -1,3 +1,4 @@
+// Array of objects containing the markers data to compose the map
 const locations = [
   {
     id: 0,
