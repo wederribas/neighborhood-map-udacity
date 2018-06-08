@@ -19,9 +19,9 @@
     <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
       <button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
 
-      <input class="w3-input" type="text" placeholder="Filter locations...">
+      <input class="w3-input" type="text" data-bind="value: locationFilter, valueUpdate: 'keyup'" placeholder="Filter locations...">
 
-      <ul class="w3-ul" data-bind="foreach: locationsList">
+      <ul class="w3-ul" data-bind="foreach: visibleLocations">
         <li class="w3-hover-teal" data-bind="text: name, click: $root.selectLocation"></li>
       </ul>
     </div>
