@@ -42,12 +42,14 @@ function openInfoWindowWithAnimation(map, marker) {
       "content-type": "application/json"
     }
   }).then(function(response) {
-    response.json().then(data => {
-      const pageId = Object.keys(data.query.pages)[0];
+    response
+      .json()
+      .then(data => {
+        const pageId = Object.keys(data.query.pages)[0];
 
-      const locationSummary = data.query.pages[pageId].extract;
+        const locationSummary = data.query.pages[pageId].extract;
 
-      const content = `
+        const content = `
         <div>
           <h3>${marker.title}</h3>
           <article class="infowindow-text">
@@ -57,10 +59,14 @@ function openInfoWindowWithAnimation(map, marker) {
         </div>
       `;
 
-      infoWindow.setContent(content);
+        infoWindow.setContent(content);
 
-      infoWindow.open(map, marker);
-    });
+        infoWindow.open(map, marker);
+      })
+      .catch(error => {
+        document.getElementById("wikipedia-error-modal").style.display =
+          "block";
+      });
   });
 
   if (marker.getAnimation() !== null) {

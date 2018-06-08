@@ -35,13 +35,32 @@
     </div>
   </main>
 
+  <div id="google-maps-error-modal" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('google-maps-error').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <p>Ops! Google Maps is not accessible. Reload the page and try again.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="wikipedia-error-modal" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('wikipedia-error-modal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <p>Ops! It was not possible to reach Wikipedia. Reload the page and try again.</p>
+      </div>
+    </div>
+  </div>
+
   <div id="map"></div>
 
   <script type="text/javascript" src="app/locations.js"></script>
   <script type="text/javascript" src="app/app.js"></script>
   <script type="text/javascript" src="app/w3.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-uoB5bdBv-1xqWs-Eyh9ZbUxx-zEJog&callback=initMap">
-  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-uoB5bdBv-1xqWs-Eyh9ZbUxx-zEJog&callback=initMap"
+    onerror="document.getElementById('google-maps-error-modal').style.display='block'">
+    </script>
 </body>
 
 </html>
