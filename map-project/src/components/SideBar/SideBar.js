@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { LocationsList } from "components";
 import { Drawer, TextField, withStyles } from "@material-ui/core";
 
 const styles = theme => ({
   textField: {
-    width: 200
+    width: "100%"
   }
 });
 
@@ -18,21 +18,46 @@ function FilterInput(props) {
       type="search"
       className={classes.textField}
       margin="normal"
+      onChange={props.hangleInputChange}
+      value={props.value}
     />
   );
 }
 
-function SideBar(props) {
-  return (
-    <Drawer open={props.isOpen} onClose={() => props.toggleSideBar(false)}>
-      <FilterInput {...props} />
-      <LocationsList />
-    </Drawer>
-  );
-}
+class SideBar extends Component {
+  constructor(props) {
+    super(props);
 
-SideBar.propTypes = {
-  toggleSideBar: PropTypes.func.isRequired
-};
+    this.state = {
+      searchParam: ""
+    };
+  }
+
+  static propTypes = {
+    toggleSideBar: PropTypes.func.isRequired
+  };
+
+  handleSearchInput = event => {
+    this.setState({
+      searchParam: event.target.value
+    });
+  };
+
+  render() {
+    return (
+      <Drawer
+        open={this.props.isOpen}
+        onClose={() => this.props.toggleSideBar(false)}
+      >
+        <FilterInput
+          {...this.props}
+          hangleInputChange={this.handleSearchInput}
+          value={this.state.searchParam}
+        />
+        <LocationsList searchParam={this.state.searchParam} />
+      </Drawer>
+    );
+  }
+}
 
 export default withStyles(styles)(SideBar);
