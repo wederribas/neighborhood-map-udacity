@@ -14,14 +14,11 @@ _ACCESS A LIVE VERSION [HERE](https://wederribas.github.io/neighborhood-map-udac
 
 ## Built With
 
-- [KnockouJS](http://knockoutjs.com/)
+- [React](https://reactjs.org/)
+- [Create React App](https://github.com/facebook/create-react-app)
 - [Google Maps API](https://developers.google.com/maps/documentation/)
-- [w3CSS](https://www.w3schools.com/W3CSS/)
+- [Material UI](https://material-ui.com/)
 - [Media Wiki API](https://www.mediawiki.org/wiki/API:Main_page)
-
-## Requirements
-
-There are no special requirements to run this project. All libraries are loaded from CDN's, making an Iternet connection the only requirement to run this project.
 
 ## Installation and Execution
 
@@ -29,10 +26,10 @@ To get this project up and running, first clone the repository and then open the
 
 ```
 $ git clone https://github.com/wederribas/neighborhood-map-udacity.git
+
 $ cd neighbothood-map
 
-# Suggestion
-$ google-chrome-stable index.html
+$ yarn start
 ```
 
 ## Authors
