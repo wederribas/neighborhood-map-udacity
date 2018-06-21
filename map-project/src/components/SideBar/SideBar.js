@@ -38,9 +38,13 @@ class SideBar extends Component {
   };
 
   handleSearchInput = event => {
+    const searchParam = event.target.value;
+
     this.setState({
-      searchParam: event.target.value
+      searchParam: searchParam
     });
+
+    this.props.handleLocationsFilter(searchParam);
   };
 
   render() {
@@ -54,7 +58,7 @@ class SideBar extends Component {
           hangleInputChange={this.handleSearchInput}
           value={this.state.searchParam}
         />
-        <LocationsList searchParam={this.state.searchParam} />
+        <LocationsList locations={this.props.locations} />
       </Drawer>
     );
   }
