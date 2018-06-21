@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Map, NavBar, SideBar } from "components";
+import { locations } from "assets/locations";
 import "./App.css";
 
 const googleMapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBA-uoB5bdBv-1xqWs-Eyh9ZbUxx-zEJog`;
@@ -27,13 +28,31 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isSideBarOpen: false
+      isSideBarOpen: false,
+      displayedLocations: locations
     };
   }
 
   handleSideBarToggle = isOpen => {
     this.setState({
       isSideBarOpen: isOpen
+    });
+  };
+
+  handleLocationsFilter = searchParam => {
+    this.setState({
+      displayedLocations: locations.filter(location => {
+        const locationName = location.name.toLowerCase();
+
+        if (
+          searchParam &&
+          locationName.indexOf(searchParam.toLowerCase()) === -1
+        ) {
+          return false;
+        }
+
+        return true;
+      })
     });
   };
 
@@ -44,12 +63,15 @@ class App extends Component {
         <SideBar
           isOpen={this.state.isSideBarOpen}
           toggleSideBar={this.handleSideBarToggle}
+          locations={this.state.displayedLocations}
+          handleLocationsFilter={this.handleLocationsFilter}
         />
         <Map
           googleMapURL={googleMapURL}
           loadingElement={<div style={{ height: "100%" }} />}
           containerElement={<div style={mapContainerStyles} />}
           mapElement={<div style={mapElementStyles} />}
+          locations={this.state.displayedLocations}
         />
       </div>
     );
